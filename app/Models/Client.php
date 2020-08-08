@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model 
+class Client extends Model
 {
 
     protected $table = 'clients';
@@ -50,5 +51,4 @@ class Client extends Model
     {
         return $this->hasMany('DonationRequest');
     }
-
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
-class Notification extends Model 
+class Notification extends Model
 {
 
     protected $table = 'notifications';
@@ -12,12 +13,11 @@ class Notification extends Model
 
     public function clients()
     {
-        return $this->morphToMany('Client', 'clientable');
+        return $this->morphToMany('App\Models\Client', 'clientable');
     }
 
     public function donationRequest()
     {
-        return $this->belongsTo('DonationRequest');
+        return $this->belongsTo('App\Models\DonationRequest');
     }
-
 }

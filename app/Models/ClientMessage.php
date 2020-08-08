@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
-class ClientMessage extends Model 
+class ClientMessage extends Model
 {
 
     protected $table = 'client_messages';
@@ -13,7 +14,6 @@ class ClientMessage extends Model
 
     public function client()
     {
-        return $this->belongsTo('Client');
+        return $this->belongsTo('App\Models\Client');
     }
-
 }

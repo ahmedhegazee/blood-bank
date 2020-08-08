@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model 
+class Post extends Model
 {
 
     protected $table = 'posts';
@@ -13,12 +14,11 @@ class Post extends Model
 
     public function category()
     {
-        return $this->belongsTo('Category');
+        return $this->belongsTo('App\Models\Category');
     }
 
     public function favouritedClients()
     {
-        return $this->morphToMany('Client', 'clientable');
+        return $this->morphToMany('App\Models\Client', 'clientable');
     }
-
 }

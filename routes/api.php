@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,12 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
+    Route::get('governments', 'MainController@getGovernments');
+    Route::get('cities', 'MainController@getCities');
+    Route::get('blood-types', 'MainController@getBloodTypes');
+    Route::get('settings', 'MainController@getSettings');
+});
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });

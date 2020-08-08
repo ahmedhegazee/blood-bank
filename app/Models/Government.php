@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
-class Government extends Model 
+class Government extends Model
 {
 
     protected $table = 'governments';
@@ -13,7 +14,6 @@ class Government extends Model
 
     public function cities()
     {
-        return $this->hasMany('City');
+        return $this->hasMany('App\Models\City');
     }
-
 }

@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
-class DonationRequest extends Model 
+class DonationRequest extends Model
 {
 
     protected $table = 'donation_requests';
@@ -15,5 +16,4 @@ class DonationRequest extends Model
     {
         return $this->belongsTo('Client');
     }
-
 }

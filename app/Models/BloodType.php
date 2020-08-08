@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BloodType extends Model 
+class BloodType extends Model
 {
 
     protected $table = 'blood_types';
@@ -13,7 +13,6 @@ class BloodType extends Model
 
     public function favouriteClients()
     {
-        return $this->morphToMany('Client', 'clientable');
+        return $this->morphToMany('App\Models\Client', 'clientable');
     }
-
 }
