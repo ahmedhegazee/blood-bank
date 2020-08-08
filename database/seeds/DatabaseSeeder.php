@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\BloodType;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,6 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        $this->call(GovernsTableSeeder::class);
+        $this->call(SettingsTableSeeder::class);
+        $this->call(BloodTypesTableSeeder::class);
     }
 }
