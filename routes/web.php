@@ -25,3 +25,7 @@ Route::resource('clientmessage', 'ClientMessageController');
 Route::resource('notification', 'NotificationController');
 Route::resource('settings', 'SettingsController');
 Route::resource('clientables', 'ClientablesController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

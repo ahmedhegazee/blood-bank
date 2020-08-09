@@ -46,10 +46,14 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
-        'clients' => [
-            'driver' => 'token',
+        'client' => [
+            'driver' => 'session',
             'provider' => 'clients'
-        ]
+        ],
+        'client_api' => [
+            'driver' => 'token',
+            'provider' => 'clients',
+        ],
     ],
 
     /*
@@ -103,6 +107,11 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+        'clients' => [
+            'provider' => 'clients',
             'table' => 'password_resets',
             'expire' => 60,
         ],

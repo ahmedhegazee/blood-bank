@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,7 +20,15 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::get('cities', 'MainController@getCities');
     Route::get('blood-types', 'MainController@getBloodTypes');
     Route::get('settings', 'MainController@getSettings');
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+    Route::group(['middleware' => 'auth:client_api'], function () {
+        Route::get('test-user', function () {
+            dd(auth()->guard('client_api')->user());
+        });
+    });
 });
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
