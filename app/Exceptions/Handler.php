@@ -49,6 +49,7 @@ class Handler extends ExceptionHandler
     {
         return parent::render($request, $exception);
     }
+    // overrided the this method to change the json response look
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         return request()->expectsJson() ? jsonResponse(0, 'unauthintecated', [], 401) : redirect()->guest($exception->redirectTo() ?? route('login'));

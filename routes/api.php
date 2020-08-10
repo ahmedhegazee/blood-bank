@@ -22,9 +22,16 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     Route::get('settings', 'MainController@getSettings');
     Route::post('register', 'AuthController@register');
     Route::post('login', 'AuthController@login');
+    Route::post('send-code', 'AuthController@sendResetCode');
+    Route::post('reset', 'AuthController@resetPassword');
+    // auth is the middleware , client_api is the guard we defined it in the auth file
     Route::group(['middleware' => 'auth:client_api'], function () {
-        Route::get('test-user', function () {
-            dd(auth()->guard('client_api')->user());
+        Route::patch('profile', 'AuthController@updateProfele');
+        Route::group(['prefix' => 'favourite'], function () {
+            Route::get('blood-type', 'AuthController@getFavouriteBloodTypes');
+            Route::post('blood-type', 'AuthController@addFavouriteBloodTypes');
+            Route::get('city', 'AuthController@getFavouriteCities');
+            Route::post('city', 'AuthController@addFavouriteCities');
         });
     });
 });

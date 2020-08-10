@@ -34,6 +34,7 @@ class AuthController extends Controller
             return jsonResponse(0, 'errors', $validator->errors());
         }
         // dd(Auth::guard('clients'));
+        //here we use session driver because attempt works only in it
         $auth = Auth::guard('client')->attempt(['phone' => $request->phone, 'password' => $request->password]);
         if ($auth) {
             $client = Auth::guard('client')->user();
@@ -53,6 +54,8 @@ class AuthController extends Controller
     }
     public function validateRegister($data)
     {
+        // regex rule should be in an array.
+        // before : means before today and -16 years mean before this year about 16 years
         $rules = [
             'name' => 'required|string|min:5',
             'password' => 'required|string|min:8|confirmed',
@@ -64,5 +67,105 @@ class AuthController extends Controller
             'blood_type_id' => ['required', Rule::in(BloodType::all()->pluck('id')->toArray())],
         ];
         return validator()->make($data, $rules);
+    }
+    public function validateUpdateProfile($data, $client)
+    {
+        // regex rule should be in an array.
+        // before : means before today and -16 years mean before this year about 16 years
+        $rules = [
+            'name' => 'sometimes|string|min:5',
+            'password' => 'sometimes|string|min:8|confirmed',
+            'email' => ['sometimes', 'email', Rule::unique('clients')->ignore($client->id)],
+            'phone' => ['sometimes', 'regex:/^(010|011|012|015){1}[0-9]{8}$/', Rule::unique('clients')->ignore($client->id)],
+            'dob' => 'sometimes|date|before: -16 years',
+            'last_donation_date' => 'sometimes|date|before_or_equal: -1 days',
+            'city_id' => ['sometimes', Rule::in(City::all()->pluck('id')->toArray())],
+            'blood_type_id' => ['sometimes', Rule::in(BloodType::all()->pluck('id')->toArray())],
+        ];
+        return validator()->make($data, $rules);
+    }
+    public function updateProfele(Request $request)
+    {
+        // dd($request->all());
+        $client = auth()->guard('client_api')->user();
+        $validator = $this->validateUpdateProfile($request->all(), $client);
+        // $validator = $this->validateRegister($request->all());
+        if ($validator->fails()) {
+            return jsonResponse(0, 'errors', $validator->errors());
+        }
+        $client->update($request->all());
+        // $client->save();
+        return jsonResponse(1, 'تم التحديث بنجاح',  $client);
+    }
+    public function getFavouriteBloodTypes()
+    {
+        $client = auth()->guard('client_api')->user();
+        return  jsonResponse(1, 'success', $client->favouriteBloodTypes);
+    }
+    public function addFavouriteBloodTypes(Request $request)
+    {
+        $validator = validator()->make($request->all(), [
+            'bloodType' => 'required|array',
+            'bloodType.*' => [Rule::in(BloodType::all()->pluck('id')->toArray())]
+        ]);
+        if ($validator->fails()) {
+            return jsonResponse(0, 'errors', $validator->errors());
+        }
+        $client = auth()->guard('client_api')->user();
+        $client->favouriteBloodTypes()->sync($request->bloodType);
+        $bloodTypes = $client->favouriteBloodTypes;
+        return jsonResponse(1, 'تم التحديث بنجاح',  $bloodTypes);
+    }
+    public function getFavouriteCities()
+    {
+        $client = auth()->guard('client_api')->user();
+        return  jsonResponse(1, 'success', $client->favouriteCities);
+    }
+    public function addFavouriteCities(Request $request)
+    {
+        $validator = validator()->make($request->all(), [
+            'city' => 'required|array',
+            'city.*' => [Rule::in(City::all()->pluck('id')->toArray())]
+        ]);
+        if ($validator->fails()) {
+            return jsonResponse(0, 'errors', $validator->errors());
+        }
+        $client = auth()->guard('client_api')->user();
+        $client->favouriteCities()->sync($request->city);
+        $cities = $client->favouriteCities;
+        return jsonResponse(1, 'تم التحديث بنجاح',  $cities);
+    }
+    public function sendResetCode(Request $request)
+    {
+        $validator = validator()->make($request->all(), [
+            'phone' => ['required', 'regex:/^(010|011|012|015){1}[0-9]{8}$/', Rule::in(Client::all()->pluck('phone')->toArray())],
+        ]);
+        if ($validator->fails()) {
+            return jsonResponse(0, 'errors', $validator->errors());
+        }
+        $resetCode = random_int(100000, 999999);
+        $client = Client::where('phone', $request->phone)->first();
+        $client->pin_code = $resetCode;
+        $client->save();
+        sendSMS('your reset code is ' . $resetCode, '+2' . $client->phone);
+        return jsonResponse(1, 'تم ارسال الكود بنجاح');
+    }
+    public function resetPassword(Request $request)
+    {
+        $validator = validator()->make($request->all(), [
+            'phone' => ['required', 'regex:/^(010|011|012|015){1}[0-9]{8}$/', Rule::in(Client::all()->pluck('phone')->toArray())],
+            'code' => 'required|string|min:6|max:6',
+            'password' => 'sometimes|string|min:8|confirmed',
+        ]);
+        if ($validator->fails()) {
+            return jsonResponse(0, 'errors', $validator->errors());
+        }
+        $client = Client::where('phone', $request->phone)->first();
+        if ($client->pin_code == $request->code) {
+            $client->update(['pin_code' => '000000', 'password' => bcrypt($request->password)]);
+            return jsonResponse(1, 'تم تغيير كلمة المرور بنجاح', ['api_token' => $client->api_token, 'client' => $client]);
+        } else {
+            return jsonResponse(0, 'الرجاء ادخال الكود الصحيح');
+        }
     }
 }
