@@ -44,7 +44,7 @@ class Client extends Authenticatable
 
     public function messages()
     {
-        return $this->hasMany('ClientMessage');
+        return $this->hasMany('App\Models\ClientMessage');
     }
 
     public function notifications()
@@ -54,6 +54,6 @@ class Client extends Authenticatable
 
     public function donationRequests()
     {
-        return $this->hasMany('DonationRequest');
+        return $this->hasMany('App\Models\DonationRequest');
     }
 }

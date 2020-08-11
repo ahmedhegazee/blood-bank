@@ -27,8 +27,10 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     // auth is the middleware , client_api is the guard we defined it in the auth file
     Route::group(['middleware' => 'auth:client_api'], function () {
         Route::patch('profile', 'AuthController@updateProfele');
-        Route::apiResource('post', 'PostController')->except('update');
-        Route::post('post/{post}', 'PostController@update');
+        Route::apiResource('post', 'PostController')->only(['index', 'show']);
+        Route::post('contact-us', 'MainController@storeClientMessages');
+        // Route::get('contact-us', 'MainController@getClientMessages');
+        // Route::post('post/{post}', 'PostController@update');
         Route::group(['prefix' => 'favourite'], function () {
             Route::get('blood-type', 'AuthController@getFavouriteBloodTypes');
             Route::post('blood-type', 'AuthController@addFavouriteBloodTypes');
