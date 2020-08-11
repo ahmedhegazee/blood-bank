@@ -27,11 +27,15 @@ Route::group(['prefix' => 'v1', 'namespace' => 'Api'], function () {
     // auth is the middleware , client_api is the guard we defined it in the auth file
     Route::group(['middleware' => 'auth:client_api'], function () {
         Route::patch('profile', 'AuthController@updateProfele');
+        Route::apiResource('post', 'PostController')->except('update');
+        Route::post('post/{post}', 'PostController@update');
         Route::group(['prefix' => 'favourite'], function () {
             Route::get('blood-type', 'AuthController@getFavouriteBloodTypes');
             Route::post('blood-type', 'AuthController@addFavouriteBloodTypes');
             Route::get('city', 'AuthController@getFavouriteCities');
             Route::post('city', 'AuthController@addFavouriteCities');
+            Route::get('post', 'PostController@favouritePosts');
+            Route::post('post', 'PostController@toggleFavouritePosts');
         });
     });
 });

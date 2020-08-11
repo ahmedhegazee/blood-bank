@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\BloodType;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -15,5 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GovernsTableSeeder::class);
         $this->call(SettingsTableSeeder::class);
         $this->call(BloodTypesTableSeeder::class);
+        $this->call(CategoryTableSeeder::class);
+        $this->call(PostTableSeeder::class);
     }
 }

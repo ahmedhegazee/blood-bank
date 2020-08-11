@@ -155,7 +155,7 @@ class AuthController extends Controller
         $validator = validator()->make($request->all(), [
             'phone' => ['required', 'regex:/^(010|011|012|015){1}[0-9]{8}$/', Rule::in(Client::all()->pluck('phone')->toArray())],
             'code' => 'required|string|min:6|max:6',
-            'password' => 'sometimes|string|min:8|confirmed',
+            'password' => 'required|string|min:8|confirmed',
         ]);
         if ($validator->fails()) {
             return jsonResponse(0, 'errors', $validator->errors());
