@@ -45,7 +45,7 @@ class MainController extends Controller
     }
     public function storeClientMessages(Request $request)
     {
-        $client = auth()->guard('client_api')->user();
+        $client = $request->user();
         $validator = validator()->make($request->all(), [
             'title' => 'required|string|min:3|max:255',
             'content' => 'required|string'

@@ -11,20 +11,22 @@
 |
 */
 
+use Illuminate\Support\Facades\DB;
+
 Route::get('/', function () {
     return view('welcome');
 });
-Route::resource('client', 'ClientController');
-Route::resource('government', 'GovernmentController');
-Route::resource('city', 'CityController');
-Route::resource('bloodtype', 'BloodTypeController');
-Route::resource('category', 'CategoryController');
-Route::resource('post', 'PostController');
-Route::resource('donationrequest', 'DonationRequestController');
-Route::resource('clientmessage', 'ClientMessageController');
-Route::resource('notification', 'NotificationController');
-Route::resource('settings', 'SettingsController');
-Route::resource('clientables', 'ClientablesController');
+// Route::resource('client', 'ClientController');
+// Route::resource('government', 'GovernmentController');
+// Route::resource('city', 'CityController');
+// Route::resource('bloodtype', 'BloodTypeController');
+// Route::resource('category', 'CategoryController');
+// Route::resource('post', 'PostController');
+// Route::resource('donationrequest', 'DonationRequestController');
+// Route::resource('clientmessage', 'ClientMessageController');
+// Route::resource('notification', 'NotificationController');
+// Route::resource('settings', 'SettingsController');
+// Route::resource('clientables', 'ClientablesController');
 
 Auth::routes();
 

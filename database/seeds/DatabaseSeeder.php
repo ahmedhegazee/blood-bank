@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(BloodTypesTableSeeder::class);
         $this->call(CategoryTableSeeder::class);
         $this->call(PostTableSeeder::class);
+        $this->call(ClientsTableSeeder::class);
     }
 }

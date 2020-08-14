@@ -30,3 +30,36 @@ function sendSMS($message, $recipients)
         ['from' => $twilio_number, 'body' => $message]
     );
 }
+function notifyByFireBase($title, $body, $tokens, $data)
+{
+
+    $fcmMessage = [
+        'body' => $body,
+        'title' => $title,
+        'sound' => 'default',
+        'color' => '#203E78'
+    ];
+    $fcmFileds = [
+        'registeration_ids' => $tokens,
+        'priority' => 'high',
+        'notification' => $fcmMessage,
+        'data' => $data,
+    ];
+    $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+    $headers = [
+        'Authorization: key=' . env('FCM_SERVER_KEY'),
+        'Content-Type: application/json'
+    ];
+
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $fcmUrl);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmFileds));
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}

@@ -3,11 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateDonationRequestsTable extends Migration {
+class CreateDonationRequestsTable extends Migration
+{
 
 	public function up()
 	{
-		Schema::create('donation_requests', function(Blueprint $table) {
+		Schema::create('donation_requests', function (Blueprint $table) {
 			$table->increments('id');
 			$table->timestamps();
 			$table->string('name', 255);
@@ -16,10 +17,10 @@ class CreateDonationRequestsTable extends Migration {
 			$table->smallInteger('no_blood_bags')->unsigned();
 			$table->integer('city_id')->unsigned();
 			$table->string('phone', 11);
-			$table->text('notes');
-			$table->string('address');
-			$table->decimal('longtitude');
-			$table->decimal('latitude');
+			$table->text('notes')->nullable();
+			$table->string('address')->nullable();
+			$table->decimal('longtitude', 10, 6)->nullable();
+			$table->decimal('latitude', 10, 6)->nullable();
 			$table->integer('client_id')->unsigned();
 		});
 	}

@@ -32,14 +32,14 @@ class Client extends Authenticatable
         return $this->morphedByMany('App\Models\Post', 'clientable');
     }
 
-    public function favouriteBloodTypes()
+    public function bloodTypes()
     {
         return $this->morphedByMany('App\Models\BloodType', 'clientable');
     }
 
-    public function favouriteCities()
+    public function governments()
     {
-        return $this->morphedByMany('App\Models\City', 'clientable');
+        return $this->morphedByMany('App\Models\Government', 'clientable');
     }
 
     public function messages()
@@ -55,5 +55,17 @@ class Client extends Authenticatable
     public function donationRequests()
     {
         return $this->hasMany('App\Models\DonationRequest');
+    }
+    public function scopeSearchBloodType($query, $blood)
+    {
+        return $query->where('blood_type_id', $blood);
+    }
+    public function scopeSearchCity($query, $city)
+    {
+        return $query->where('city_id', $city);
+    }
+    public function tokens()
+    {
+        return $this->hasMany('App\Models\Token');
     }
 }

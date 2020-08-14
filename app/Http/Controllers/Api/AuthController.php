@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\BloodType;
 use App\Models\City;
 use App\Models\Client;
+use App\Models\Government;
+use App\Models\Token;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -29,15 +31,18 @@ class AuthController extends Controller
     {
 
         $validator = $this->validateLogin($request->all());
-        // $validator = $this->validateRegister($request->all());
         if ($validator->fails()) {
             return jsonResponse(0, 'errors', $validator->errors());
         }
-        // dd(Auth::guard('clients'));
+
         //here we use session driver because attempt works only in it
         $auth = Auth::guard('client')->attempt(['phone' => $request->phone, 'password' => $request->password]);
         if ($auth) {
             $client = Auth::guard('client')->user();
+            if (is_null($client->api_token)) {
+                $client->api_token = Str::random(60);
+                $client->save();
+            }
             return jsonResponse(1, 'تم الدخول بنجاح', ['api_token' => $client->api_token, 'client' => $client]);
         } else {
             $msg = 'بيانات المستخدم غير صحيحة';
@@ -87,7 +92,7 @@ class AuthController extends Controller
     public function updateProfele(Request $request)
     {
         // dd($request->all());
-        $client = auth()->guard('client_api')->user();
+        $client = $request->user();
         $validator = $this->validateUpdateProfile($request->all(), $client);
         // $validator = $this->validateRegister($request->all());
         if ($validator->fails()) {
@@ -100,7 +105,7 @@ class AuthController extends Controller
     public function getFavouriteBloodTypes()
     {
         $client = auth()->guard('client_api')->user();
-        return  jsonResponse(1, 'success', $client->favouriteBloodTypes);
+        return  jsonResponse(1, 'success', $client->bloodTypes);
     }
     public function addFavouriteBloodTypes(Request $request)
     {
@@ -111,29 +116,27 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return jsonResponse(0, 'errors', $validator->errors());
         }
-        $client = auth()->guard('client_api')->user();
-        $client->favouriteBloodTypes()->sync($request->bloodType);
-        $bloodTypes = $client->favouriteBloodTypes;
-        return jsonResponse(1, 'تم التحديث بنجاح',  $bloodTypes);
+        $client = $request->user();
+        $client->bloodTypes()->sync($request->bloodType);
+        return jsonResponse(1, 'تم التحديث بنجاح');
     }
-    public function getFavouriteCities()
+    public function getFavouriteGovernments()
     {
         $client = auth()->guard('client_api')->user();
-        return  jsonResponse(1, 'success', $client->favouriteCities);
+        return  jsonResponse(1, 'success', $client->governments);
     }
-    public function addFavouriteCities(Request $request)
+    public function addFavouriteGovernments(Request $request)
     {
         $validator = validator()->make($request->all(), [
-            'city' => 'required|array',
-            'city.*' => [Rule::in(City::all()->pluck('id')->toArray())]
+            'govern' => 'required|array',
+            'govern.*' => [Rule::in(Government::all()->pluck('id')->toArray())]
         ]);
         if ($validator->fails()) {
             return jsonResponse(0, 'errors', $validator->errors());
         }
-        $client = auth()->guard('client_api')->user();
-        $client->favouriteCities()->sync($request->city);
-        $cities = $client->favouriteCities;
-        return jsonResponse(1, 'تم التحديث بنجاح',  $cities);
+        $client = $request->user();
+        $client->governments()->sync($request->govern);
+        return jsonResponse(1, 'تم التحديث بنجاح');
     }
     public function sendResetCode(Request $request)
     {
@@ -167,5 +170,37 @@ class AuthController extends Controller
         } else {
             return jsonResponse(0, 'الرجاء ادخال الكود الصحيح');
         }
+    }
+    public function storeToken(Request $request)
+    {
+        $client = $request->user();
+        $validator = validator()->make(request()->all(), [
+            'token' => 'required|string',
+            'type' => ['required', Rule::in(['ios', 'android'])]
+        ]);
+        if ($validator->fails())
+            return jsonResponse(0, 'errors', $validator->errors());
+        Token::where('token', $request->token)->delete();
+        $client->tokens()->create($request->all());
+        return jsonResponse(1, 'added successfully');
+    }
+    public function getTokens()
+    {
+        $client = auth()->guard('client_api')->user();
+        return jsonResponse(1, 'tokens', $client->tokens);
+    }
+    public function removeToken(Request $request)
+    {
+        $validator = validator()->make(request()->all(), [
+            'token' => 'required|string',
+        ]);
+        if ($validator->fails())
+            return jsonResponse(0, 'errors', $validator->errors());
+        Token::where('token', $request->token)->delete();
+        return jsonResponse(1, 'deleted successfully');
+    }
+    public function getNotifications()
+    {
+        return jsonResponse(1, 'الاشعارات', auth()->guard('client_api')->user()->notifications);
     }
 }

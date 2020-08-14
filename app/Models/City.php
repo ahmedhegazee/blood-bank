@@ -17,10 +17,7 @@ class City extends Model
         return $this->belongsTo('App\Models\Government');
     }
 
-    public function favouriteClients()
-    {
-        return $this->morphToMany('App\Models\Client', 'clientable');
-    }
+
 
     public function scopeGovern($query, $govern = null)
     {

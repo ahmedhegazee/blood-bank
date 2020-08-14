@@ -42,7 +42,7 @@ class PostController extends Controller
         if ($validator->fails()) {
             return jsonResponse(0, 'errors', $validator->errors());
         }
-        $client = auth()->guard('client_api')->user();
+        $client = $request->user();
         $client->favouritePosts()->toggle($request->post);
         return jsonResponse(1, 'تم التحديث بنجاح');
     }

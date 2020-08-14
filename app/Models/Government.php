@@ -16,4 +16,8 @@ class Government extends Model
     {
         return $this->hasMany('App\Models\City');
     }
+    public function clients()
+    {
+        return $this->morphToMany('App\Models\Client', 'clientable');
+    }
 }
