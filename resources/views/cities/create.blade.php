@@ -1,6 +1,8 @@
 @extends('layouts.app')
+@inject('model', 'App\Models\City')
 @section('page_title')
-    Governments
+        Cities of {{$govern->name}}
+
 @endsection
 @section('content')
         <!-- Content Header (Page header) -->
@@ -11,19 +13,18 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Edit Government</h3>
+          <h3 class="card-title">Create City</h3>
 
         </div>
         <div class="card-body">
             
         @include('partials.validation-errors')
             {!!
-                Form::model($government,[ 
-                    'route'=>['government.update',$government->id],
-                    'method' => 'put'
+                Form::model($model,[
+                    'route'=>['city.store','govern'=>$govern->id]
                 ])
                 !!}
-             @include('governments.form')
+             @include('cities.form')
                 {!!Form::close()!!}
            </div>
         <!-- /.card-body -->

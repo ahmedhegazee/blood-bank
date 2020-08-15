@@ -53,7 +53,7 @@ class GovernmentController extends Controller
      */
     public function show(Government $government)
     {
-        $records = $government->cities;
+        $records = $government->cities()->paginate(10);
         return view('governments.show', compact('records', 'government'));
     }
 

@@ -2,29 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\City;
+use App\Models\City;
+use App\Models\Government;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Government $govern)
     {
-        //
+        return view('cities.create', compact('govern'));
     }
 
     /**
@@ -33,21 +26,16 @@ class CityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Government $govern)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|min:3',
+        ]);
+        $govern->cities()->create($request->all());
+        flash('City is added', 'success')->important();
+        return redirect()->route('government.show', compact('govern'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\City  $city
-     * @return \Illuminate\Http\Response
-     */
-    public function show(City $city)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -55,9 +43,9 @@ class CityController extends Controller
      * @param  \App\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function edit(City $city)
+    public function edit(Government $govern, City $city)
     {
-        //
+        return view('cities.edit', compact('govern', 'city'));
     }
 
     /**
@@ -67,9 +55,14 @@ class CityController extends Controller
      * @param  \App\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, City $city)
+    public function update(Request $request, Government $govern, City $city)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|min:3',
+        ]);
+        $city->update($request->all());
+        flash('City is updated', 'success')->important();
+        return redirect()->route('government.show', compact('govern'));
     }
 
     /**
@@ -78,8 +71,10 @@ class CityController extends Controller
      * @param  \App\City  $city
      * @return \Illuminate\Http\Response
      */
-    public function destroy(City $city)
+    public function destroy(Government $govern, City $city)
     {
-        //
+        $city->delete();
+        flash('City is deleted', 'success')->important();
+        return redirect()->route('government.show', compact('govern'));
     }
 }

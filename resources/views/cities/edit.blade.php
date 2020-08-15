@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('page_title')
-    Governments
+            Cities of {{$govern->name}}
+
 @endsection
 @section('content')
         <!-- Content Header (Page header) -->
@@ -11,15 +12,15 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Edit Government</h3>
+          <h3 class="card-title">Edit City</h3>
 
         </div>
         <div class="card-body">
             
         @include('partials.validation-errors')
             {!!
-                Form::model($government,[ 
-                    'route'=>['government.update',$government->id],
+                Form::model($city,[ 
+                    'route'=>['city.update','govern'=>$govern->id,'city'=>$city->id],
                     'method' => 'put'
                 ])
                 !!}

@@ -53,6 +53,7 @@ href="{{asset('adminlte/plugins/css/dataTables.bootstrap4.min.css')}}"
                     <th>ID</th>
                     <th>Name</th>
                     <th>No Cities</th>
+                    <th>Show</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </thead>
@@ -62,6 +63,9 @@ href="{{asset('adminlte/plugins/css/dataTables.bootstrap4.min.css')}}"
                        <td>{{$record->id}}</td>
                        <td>{{$record->name}}</td>
                        <td>{{$record->cities->count()}}</td>
+                       <td>
+                       <a href="{{route('government.show',['government'=>$record->id])}}" class="btn btn-primary"><i class="fas fa-city"></i></a>
+                       </td> 
                        <td>
                        <a href="{{route('government.edit',['government'=>$record->id])}}" class="btn btn-success"><i class="fas fa-edit"></i></a>
                        </td>

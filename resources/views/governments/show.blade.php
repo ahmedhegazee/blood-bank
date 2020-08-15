@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page_title')
-    Governments
+    Cities of {{$government->name}}
 @endsection
 @section('additional_styles')
      <link
@@ -44,7 +44,7 @@ href="{{asset('adminlte/plugins/css/dataTables.bootstrap4.min.css')}}"
         </div>
         <div class="card-body">
             <div class="row justify-content-end mb-2">
-            <a href="{{route('government.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Government</a>
+            <a href="{{route('city.create',['govern'=>$government->id])}}" class="btn btn-primary"><i class="fas fa-plus"></i> Add City</a>
             </div>
             <table 
             id="table"
@@ -52,7 +52,6 @@ href="{{asset('adminlte/plugins/css/dataTables.bootstrap4.min.css')}}"
                 <thead>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>No Cities</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </thead>
@@ -61,23 +60,22 @@ href="{{asset('adminlte/plugins/css/dataTables.bootstrap4.min.css')}}"
                        <tr>
                        <td>{{$record->id}}</td>
                        <td>{{$record->name}}</td>
-                       <td>{{$record->cities->count()}}</td>
                        <td>
-                       <a href="{{route('government.edit',['government'=>$record->id])}}" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                       <a href="{{route('city.edit',['govern'=>$government->id,'city'=>$record->id])}}" class="btn btn-success"><i class="fas fa-edit"></i></a>
                        </td>
                        <td>
-                           <a href="{{route('government.destroy',['government'=>$record->id])}}"
+                           <a href="{{route('city.destroy',['govern'=>$government->id,'city'=>$record->id])}}"
                              onclick="event.preventDefault();
                                     document.getElementById('{{'delete'.$record->id}}').submit();" 
                             class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                        <form id="{{'delete'.$record->id}}" action="{{ route('government.destroy',['government'=>$record->id]) }}" method="POST" style="display: none;">
+                                        <form id="{{'delete'.$record->id}}" action="{{ route('city.destroy',['govern'=>$government->id,'city'=>$record->id]) }}" method="POST" style="display: none;">
                                             @method('delete')
                                         @csrf
                                     </form>
                        </td>
                        </tr>
                    @empty
-                      <tr style="text-align: center"> <td colspan=3>No Data</td></tr>
+                      <tr style="text-align: center"> <td colspan=2>No Data</td></tr>
                    @endforelse
                    </tbody>
                    </table>
