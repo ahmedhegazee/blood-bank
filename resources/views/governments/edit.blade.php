@@ -23,7 +23,7 @@
                     'method' => 'put'
                 ])
                 !!}
-             @include('governments.form')
+             @include('layouts.form')
                 {!!Form::close()!!}
            </div>
         <!-- /.card-body -->

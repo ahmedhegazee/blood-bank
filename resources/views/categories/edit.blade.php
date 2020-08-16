@@ -1,7 +1,6 @@
 @extends('layouts.app')
-@inject('model', 'App\Models\Government')
 @section('page_title')
-    Governments
+    Categorys
 @endsection
 @section('content')
         <!-- Content Header (Page header) -->
@@ -12,15 +11,16 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Create Government</h3>
+          <h3 class="card-title">Edit Category</h3>
 
         </div>
         <div class="card-body">
             
         @include('partials.validation-errors')
             {!!
-                Form::model($model,[
-                    'route'=>'government.store'
+                Form::model($category,[ 
+                    'route'=>['category.update',$category->id],
+                    'method' => 'put'
                 ])
                 !!}
              @include('layouts.form')

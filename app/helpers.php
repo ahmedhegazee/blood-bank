@@ -40,7 +40,8 @@ function notifyByFireBase($title, $body, $tokens, $data)
         'color' => '#203E78'
     ];
     $fcmFileds = [
-        'registeration_ids' => $tokens,
+        'registration_ids' => $tokens,
+        // 'to' => $tokens,
         'priority' => 'high',
         'notification' => $fcmMessage,
         'data' => $data,

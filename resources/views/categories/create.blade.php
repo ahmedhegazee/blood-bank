@@ -1,7 +1,7 @@
 @extends('layouts.app')
-@inject('model', 'App\Models\Government')
+@inject('model', 'App\Models\Category')
 @section('page_title')
-    Governments
+    Categories
 @endsection
 @section('content')
         <!-- Content Header (Page header) -->
@@ -12,7 +12,7 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Create Government</h3>
+          <h3 class="card-title">Create Category</h3>
 
         </div>
         <div class="card-body">
@@ -20,7 +20,7 @@
         @include('partials.validation-errors')
             {!!
                 Form::model($model,[
-                    'route'=>'government.store'
+                    'route'=>'category.store'
                 ])
                 !!}
              @include('layouts.form')

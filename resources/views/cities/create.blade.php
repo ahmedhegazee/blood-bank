@@ -24,7 +24,7 @@
                     'route'=>['city.store','govern'=>$govern->id]
                 ])
                 !!}
-             @include('cities.form')
+             @include('layouts.form')
                 {!!Form::close()!!}
            </div>
         <!-- /.card-body -->

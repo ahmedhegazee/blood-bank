@@ -32,5 +32,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource('government', 'GovernmentController');
-Route::resource('/{govern}/city', 'CityController')->except(['index', 'show']);
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('government', 'GovernmentController');
+    Route::resource('/{govern}/city', 'CityController')->except(['index', 'show']);
+    Route::resource('category', 'CategoryController')->except('show');
+});
