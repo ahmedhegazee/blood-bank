@@ -2,22 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\ImageUtility;
 use App\Models\Category;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
-class CategoryController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $records = Category::paginate(10);
-        return view('categories.index', compact('records'));
+        $this->validate($request, [
+            'category' => ['sometimes', 'numeric', Rule::in(Category::all()->pluck('id')->toArray())],
+            // 'search' => 'sometimes|string'
+        ]);
+        $records = Post::searchCategory($request->category)->content($request->search)->paginate(5);
+        return view('posts.index', compact('records'));
     }
-
+    function getCategories()
+    {
+        return
+            Category::all()->mapWithKeys(function ($category) {
+                return [
+                    $category->id =>  $category->name,
+                ];
+            })->toArray();
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -25,7 +40,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        $categories = $this->getCategories();
+        return view('posts.create', compact('categories'));
     }
 
     /**
@@ -36,23 +52,34 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|min:3',
-        ]);
-        Category::create($request->all());
-        flash('Category is added', 'success')->important();
-        return redirect()->route('category.index');
-    }
 
+        $this->validate($request, [
+            'category_id' => ['required', Rule::in(Category::all()->pluck('id')->toArray())],
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'photo' => 'required|image|max:10240'
+        ]);
+
+        $image = $request->file('photo');
+        $imageStr = ImageUtility::storeImage($image, '/storage/posts/', 200, 300);
+        // dd($imageStr);
+        $data = $request->except('photo');
+        $data['photo'] =  $imageStr;
+        Post::create($data);
+        flash('Post is added', 'success')->important();
+
+        return redirect(route('post.index'));
+    }
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Post $post)
     {
-        return view('categories.edit', compact('category'));
+        $categories = $this->getCategories();
+        return view('posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -62,14 +89,26 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Post $post)
     {
         $this->validate($request, [
-            'name' => 'required|min:3',
+            'category_id' => ['sometimes', Rule::in(Category::all()->pluck('id')->toArray())],
+            'title' => 'sometimes|string',
+            'content' => 'sometimes|string',
+            'photo' => 'sometimes|image|max:10240'
         ]);
-        $category->update($request->all());
-        flash('Category is updated', 'success')->important();
-        return redirect()->route('category.index');
+
+
+        $data = $request->except('photo');
+        if ($request->has('photo')) {
+            ImageUtility::deleteImage($post->photo);
+            $image = $request->file('photo');
+            $imageStr = ImageUtility::storeImage($image, '/storage/posts/', 200, 300);
+            $data['photo'] = $imageStr;
+        }
+        $post->update($data);
+        flash('Post is updated', 'success')->important();
+        return redirect(route('post.index'));
     }
 
     /**
@@ -78,10 +117,11 @@ class CategoryController extends Controller
      * @param  \App\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Post $post)
     {
-        $category->delete();
-        flash('Category is deleted', 'success')->important();
-        return redirect()->route('category.index');
+        ImageUtility::deleteImage($post->photo);
+        $post->delete();
+        flash('Post is deleted', 'success')->important();
+        return redirect(route('post.index'));
     }
 }

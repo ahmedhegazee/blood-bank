@@ -1,6 +1,7 @@
 @extends('layouts.app')
+@inject('model', 'App\Models\Post')
 @section('page_title')
-    Categories
+    Posts
 @endsection
 @section('content')
         <!-- Content Header (Page header) -->
@@ -11,19 +12,19 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Edit Category</h3>
+          <h3 class="card-title">Create Post</h3>
 
         </div>
         <div class="card-body">
             
         @include('partials.validation-errors')
             {!!
-                Form::model($category,[ 
-                    'route'=>['category.update',$category->id],
-                    'method' => 'put'
+                Form::model($model,[
+                    'route'=>'post.store',
+                    'files'=>true
                 ])
                 !!}
-             @include('layouts.form')
+             @include('posts.form')
                 {!!Form::close()!!}
            </div>
         <!-- /.card-body -->

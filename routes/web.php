@@ -36,4 +36,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('government', 'GovernmentController');
     Route::resource('/{govern}/city', 'CityController')->except(['index', 'show']);
     Route::resource('category', 'CategoryController')->except('show');
+    Route::resource('post', 'PostController')->except('show');
 });
