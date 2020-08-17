@@ -39,11 +39,14 @@ class AuthController extends Controller
         $auth = Auth::guard('client')->attempt(['phone' => $request->phone, 'password' => $request->password]);
         if ($auth) {
             $client = Auth::guard('client')->user();
-            if (is_null($client->api_token)) {
-                $client->api_token = Str::random(60);
-                $client->save();
-            }
-            return jsonResponse(1, 'تم الدخول بنجاح', ['api_token' => $client->api_token, 'client' => $client]);
+            if (!$client->is_banned) {
+                if (is_null($client->api_token)) {
+                    $client->api_token = Str::random(60);
+                    $client->save();
+                }
+                return jsonResponse(1, 'تم الدخول بنجاح', ['api_token' => $client->api_token, 'client' => $client]);
+            } else
+                return jsonResponse(0, 'تم حظر هذا العميل');
         } else {
             $msg = 'بيانات المستخدم غير صحيحة';
             return jsonResponse(0, $msg, [], 401);

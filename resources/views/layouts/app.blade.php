@@ -91,6 +91,14 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a href="{{ route('client.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-users"></i>
+              <p>
+                Clients
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('government.index') }}" class="nav-link">
               <i class="nav-icon fas fa-university"></i>
               <p>

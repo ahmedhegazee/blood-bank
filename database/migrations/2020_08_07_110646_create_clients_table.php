@@ -20,6 +20,7 @@ class CreateClientsTable extends Migration
 			$table->integer('city_id')->unsigned();
 			$table->string('pin_code')->nullable();
 			$table->string('api_token')->unique()->nullable();
+			$table->smallInteger('is_banned')->default(0);
 			$table->integer('blood_type_id')->unsigned();
 		});
 	}

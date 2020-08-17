@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Client;
+use App\User;
 use Illuminate\Database\Seeder;
 
 class ClientsTableSeeder extends Seeder
@@ -59,5 +60,10 @@ class ClientsTableSeeder extends Seeder
                 $client->governments()->attach([8, 4]);
             }
         }
+        User::create([
+            'name' => 'ahmed hegazy',
+            'email' => 'hegz@admin.com',
+            'password' => bcrypt('password')
+        ]);
     }
 }
