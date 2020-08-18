@@ -39,4 +39,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('post', 'PostController')->except('show');
     Route::resource('client', 'ClientController')->only(['index', 'destroy', 'update']);
     Route::resource('setting', 'SettingController')->only(['index', 'edit', 'update']);
+    Route::resource('message', 'ClientMessageController')->only(['index', 'destroy']);
 });
