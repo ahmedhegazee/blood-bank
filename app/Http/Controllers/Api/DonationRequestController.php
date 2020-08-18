@@ -60,7 +60,7 @@ class DonationRequestController extends Controller
                 info('firebase result:' . $send);
                 return jsonResponse(1, 'تم ارسال الاشعارات', $donationRequest);
             } else {
-                return jsonResponse(0, 'لا يوجد متبرعين متوفرين بهذه الفصيلة');
+                return jsonResponse(0, 'لا يوجد متبرعين متوفرين بهذه الفصيلة', $donationRequest);
             }
         } else {
             return jsonResponse(0, 'لا يوجد متبرعين متوفرين بهذه الفصيلة');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ImageUtility;
 use App\Models\Category;
+use App\Models\Client;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -91,6 +92,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+
         $this->validate($request, [
             'category_id' => ['sometimes', Rule::in(Category::all()->pluck('id')->toArray())],
             'title' => 'sometimes|string',
