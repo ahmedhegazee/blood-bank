@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BloodType;
+use App\Models\Category;
+use App\Models\City;
+use App\Models\DonationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DonationRequestController extends Controller
 {
@@ -11,74 +16,42 @@ class DonationRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $this->validate($request, [
+            'category' => ['sometimes', 'numeric', Rule::in(Category::all()->pluck('id')->toArray())],
+            'city' => ['sometimes', 'numeric', Rule::in(City::all()->pluck('id')->toArray())],
+            'blood' => ['sometimes', 'numeric', Rule::in(BloodType::all()->pluck('id')->toArray())],
+            // 'search' => 'sometimes|string'
+        ]);
+        $records = DonationRequest::with('client')->with('city.government')->with('bloodType')->search($request->search)
+            ->searchBloodType($request->blood)
+            ->searchCity($request->city)
+            ->paginate(10);
+        return view('donation-requests.index', compact('records'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  DonationRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(DonationRequest $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return view('donation-requests.show', compact('request'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  DonationRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(DonationRequest $request)
     {
-        //
+        $request->delete();
+        flash('Request is deleted', 'success')->important();
+        return redirect(route('request.index'));
     }
 }

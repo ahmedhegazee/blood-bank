@@ -32,7 +32,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('government', 'GovernmentController');
     Route::resource('/{govern}/city', 'CityController')->except(['index', 'show']);
     Route::resource('category', 'CategoryController')->except('show');
@@ -40,4 +40,5 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('client', 'ClientController')->only(['index', 'destroy', 'update']);
     Route::resource('setting', 'SettingController')->only(['index', 'edit', 'update']);
     Route::resource('message', 'ClientMessageController')->only(['index', 'destroy']);
+    Route::resource('request', 'DonationRequestController')->only(['index', 'show', 'destroy']);
 });
