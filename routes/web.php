@@ -41,4 +41,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('setting', 'SettingController')->only(['index', 'edit', 'update']);
     Route::resource('message', 'ClientMessageController')->only(['index', 'destroy']);
     Route::resource('request', 'DonationRequestController')->only(['index', 'show', 'destroy']);
+    Route::resource('user', 'UserController')->except(['show']);
+    Route::get('change-password', 'UserController@showPasswordForm')->name('change-password-form');
+    Route::post('change-password', 'UserController@changePassword')->name('change-password');
 });

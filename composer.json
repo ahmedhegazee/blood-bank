@@ -15,7 +15,8 @@
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "laravelcollective/html": "^5.8",
-        "twilio/sdk": "^6.9"
+        "twilio/sdk": "^6.9",
+        "zizaco/entrust": "5.2.x-dev"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.8",

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('page_title')
-Posts
+Users
 @endsection
 @section('content')
 <!-- Content Header (Page header) -->
@@ -18,12 +18,12 @@ Posts
 
             @include('partials.validation-errors')
             {!!
-            Form::model($post,[
+            Form::model($user,[
             'route'=>['user.update',$user->id],
             'method' => 'put'
             ])
             !!}
-            @include('users.form')
+            @include('layouts.form')
             {!!Form::close()!!}
         </div>
         <!-- /.card-body -->

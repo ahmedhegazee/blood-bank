@@ -133,6 +133,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{ route('change-password-form') }}" class="nav-link">
+                                <i class="nav-icon fas fa-key"></i>
+                                <p>
+                                    Change Password
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{ route('logout') }}" onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
