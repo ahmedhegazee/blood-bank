@@ -25,6 +25,7 @@ class AuthController extends Controller
         $client = Client::create($request->all());
         $client->api_token = Str::random(60);
         $client->save();
+
         return jsonResponse(1, 'تم الاضافة بنجاح', ['api_token' => $client->api_token, 'client' => $client]);
     }
     public function login(Request $request)
@@ -34,7 +35,6 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return jsonResponse(0, 'errors', $validator->errors());
         }
-
         //here we use session driver because attempt works only in it
         $auth = Auth::guard('client')->attempt(['phone' => $request->phone, 'password' => $request->password]);
         if ($auth) {

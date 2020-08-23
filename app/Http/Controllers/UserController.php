@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -17,6 +19,8 @@ class UserController extends Controller
      */
     public function index()
     {
+        if (!auth()->user()->can('show-users'))
+            abort(403);
         $records = User::paginate(10);
         return view('users.index', compact('records'));
     }
@@ -28,7 +32,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $roles = $this->getRoles();
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -43,9 +48,11 @@ class UserController extends Controller
             'name' => 'required|string',
             'password' => 'required|string|confirmed',
             'email' => 'required|email',
+            'roles_list' => ['required', Rule::in(Role::all())]
         ]);
         $request->merge(['password' => bcrypt($request->password)]);
-        User::create($request->all());
+        $user = User::create($request->all());
+        $user->roles()->sync($request->roles_list);
         flash('User is added', 'success')->important();
         return redirect(route('user.index'));
     }
@@ -58,7 +65,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $roles = $this->getRoles();
+        $model = $user;
+        return view('users.edit', compact('model', 'roles'));
     }
 
     /**
@@ -74,9 +83,11 @@ class UserController extends Controller
             'name' => 'required|string',
             'password' => 'required|string|confirmed',
             'email' => 'required|email',
+            'roles_list' => 'required|array'
         ]);
         $request->merge(['password' => bcrypt($request->password)]);
         $user->update($request->all());
+        $user->roles()->sync($request->roles_list);
         flash('User is updated', 'success')->important();
         return redirect(route('user.index'));
     }
@@ -112,5 +123,14 @@ class UserController extends Controller
     public function showPasswordForm()
     {
         return view('auth.change-password');
+    }
+    function getRoles()
+    {
+        return
+            Role::all()->mapWithKeys(function ($role) {
+                return [
+                    $role->id =>  $role->display_name,
+                ];
+            })->toArray();
     }
 }

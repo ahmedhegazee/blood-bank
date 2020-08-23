@@ -53,7 +53,10 @@
                             alt="User Image">
                     </div>
                     <div class="info">
+                        @auth
                         <a href="{{ route('home') }}" class="d-block">{{ auth()->user()->name }}</a>
+                        @endauth
+
                     </div>
                 </div>
 
@@ -63,40 +66,19 @@
                         data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="../../index.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v1</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../../index2.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v2</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="../../index3.html" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Dashboard v3</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
                         <li class="nav-item">
                             <a href="{{ route('client.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
                                     Clients
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('request.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-hand-holding-heart"></i>
+                                <p>
+                                    Donation Request
                                 </p>
                             </a>
                         </li>
@@ -124,6 +106,30 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('user.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>
+                                    Users
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('role.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-user-tag"></i>
+                                <p>
+                                    Roles
+                                </p>
+                            </a>
+                        </li>
+                        {{-- <li class="nav-item">
+                            <a href="{{ route('permission.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-user-shield"></i>
+                        <p>
+                            Permissions
+                        </p>
+                        </a>
+                        </li> --}}
                         <li class="nav-item">
                             <a href="{{ route('setting.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
@@ -169,7 +175,7 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                                 <li class="breadcrumb-item active">@yield('page_title')</li>
                             </ol>
                         </div>
@@ -180,9 +186,10 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-block"><b>Version</b> 3.0.5</div>
-            <strong>Copyright &copy; 2014-2019
-                <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
+            <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div>
+            <strong>Copyright &copy; 2020
+                <a href="#">Blood Bank</a>.</strong>
+            Developed By Ahmed Hegazy.
             All rights reserved.
         </footer>
 

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page_title')
-Users
+Permissions
 @endsection
 @section('additional_styles')
 <link rel="stylesheet" href="{{asset('adminlte/plugins/css/dataTables.bootstrap4.min.css')}}" />
@@ -33,40 +33,40 @@ Users
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">List Of Users</h3>
+            <h3 class="card-title">List Of Permissions</h3>
 
         </div>
         <div class="card-body">
             <div class="row justify-content-end mb-2">
-                <a href="{{route('user.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Add
-                    User</a>
+                <a href="{{route('permission.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Add
+                    Permission</a>
             </div>
             <table id="table" class="table table-bordered table-hover table-striped">
                 <thead>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
-                    <th>Roles</th>
+                    <th>Dispaly Name</th>
+                    <th>Description</th>
                     <th>Edit</th>
                     <th>Delete</th>
                 </thead>
                 <tbody>
                     @forelse ($records as $record)
                     <tr>
-                        <td>{{$record->id}}</td>
+                        <td>{{$loop->iteration}}</td>
                         <td>{{$record->name}}</td>
-                        <td>{{$record->email}}</td>
-                        <td>{{$record->getRoles()}}</td>
+                        <td>{{$record->display_name}}</td>
+                        <td>{{$record->description}}</td>
                         <td>
-                            <a href="{{route('user.edit',['user'=>$record->id])}}" class="btn btn-success"><i
-                                    class="fas fa-edit"></i></a>
+                            <a href="{{route('permission.edit',['permission'=>$record->id])}}"
+                                class="btn btn-success"><i class="fas fa-edit"></i></a>
                         </td>
                         <td>
-                            <a href="{{route('user.destroy',['user'=>$record->id])}}" onclick="event.preventDefault();
+                            <a href="{{route('permission.destroy',['permission'=>$record->id])}}" onclick="event.preventDefault();
                                     document.getElementById('{{'delete'.$record->id}}').submit();"
                                 class="btn btn-danger"><i class="fas fa-trash"></i></a>
                             <form id="{{'delete'.$record->id}}"
-                                action="{{ route('user.destroy',['user'=>$record->id]) }}" method="POST"
+                                action="{{ route('permission.destroy',['permission'=>$record->id]) }}" method="POST"
                                 style="display: none;">
                                 @method('delete')
                                 @csrf

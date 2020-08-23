@@ -1,6 +1,7 @@
 @extends('layouts.app')
+@inject('model', 'App\Models\Permission')
 @section('page_title')
-Users
+Permissions
 @endsection
 @section('content')
 <!-- Content Header (Page header) -->
@@ -11,7 +12,7 @@ Users
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Edit User</h3>
+            <h3 class="card-title">Create Permission</h3>
 
         </div>
         <div class="card-body">
@@ -19,11 +20,10 @@ Users
             @include('partials.validation-errors')
             {!!
             Form::model($model,[
-            'route'=>['user.update',$model->id],
-            'method' => 'put'
+            'route'=>'permission.store'
             ])
             !!}
-            @include('users.form')
+            @include('permissions.form')
             {!!Form::close()!!}
         </div>
         <!-- /.card-body -->

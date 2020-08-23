@@ -1,26 +1,26 @@
-<?php
+-- -------------------------------------------------------------
+-- TablePlus 3.7.1(332)
+--
+-- https://tableplus.com/
+--
+-- Database: bloodbank
+-- Generation Time: 2020-08-23 12:35:40.6330
+-- -------------------------------------------------------------
 
-use App\Models\BloodType;
-use App\Models\Category;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
-class DatabaseSeeder extends Seeder
-{
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        $this->call(GovernsTableSeeder::class);
-        $this->call(SettingsTableSeeder::class);
-        $this->call(BloodTypesTableSeeder::class);
-        $this->call(CategoryTableSeeder::class);
-        $this->call(PostTableSeeder::class);
-        $this->call(ClientsTableSeeder::class);
-        DB::statement("INSERT INTO `permissions` (`id`,`name`, `display_name`, `description`, `created_at`, `updated_at`, `group`) VALUES
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+INSERT INTO `permissions` (`
+id`,`name
+`, `display_name`, `description`, `created_at`, `updated_at`, `group`) VALUES
 ('1', 'add-post', 'اضافة مقال', NULL, '2020-08-23 09:06:15', '2020-08-23 09:08:02', 'مقالات'),
 ('2', 'edit-post', 'تعديل مقال', NULL, '2020-08-23 09:06:15', '2020-08-23 09:07:55', 'مقالات'),
 ('3', 'delete-post', 'حذف مقال', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'مقالات'),
@@ -49,6 +49,12 @@ class DatabaseSeeder extends Seeder
 ('26', 'show-clients', 'عرض عملاء', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'عملاء'),
 ('27', 'delete-request', 'حذف طلب تبرع', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'عملاء'),
 ('28', 'show-requests', 'عرض طلبات التبرع', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'عملاء');
-");
-    }
-}
+
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

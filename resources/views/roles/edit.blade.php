@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('page_title')
-Users
+Roles
 @endsection
 @section('content')
 <!-- Content Header (Page header) -->
@@ -11,7 +11,7 @@ Users
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Edit User</h3>
+            <h3 class="card-title">Edit Role</h3>
 
         </div>
         <div class="card-body">
@@ -19,11 +19,11 @@ Users
             @include('partials.validation-errors')
             {!!
             Form::model($model,[
-            'route'=>['user.update',$model->id],
+            'route'=>['role.update',$model->id],
             'method' => 'put'
             ])
             !!}
-            @include('users.form')
+            @include('roles.form')
             {!!Form::close()!!}
         </div>
         <!-- /.card-body -->

@@ -31,8 +31,8 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
+Route::group(['middleware' => ['auth', 'auto-check-permission'], 'prefix' => 'dashboard'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('government', 'GovernmentController');
     Route::resource('/{govern}/city', 'CityController')->except(['index', 'show']);
     Route::resource('category', 'CategoryController')->except('show');
@@ -42,6 +42,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('message', 'ClientMessageController')->only(['index', 'destroy']);
     Route::resource('request', 'DonationRequestController')->only(['index', 'show', 'destroy']);
     Route::resource('user', 'UserController')->except(['show']);
+    Route::resource('role', 'RoleController')->except(['show']);
+    // Route::resource('permission', 'PermissionController')->except(['show']);
     Route::get('change-password', 'UserController@showPasswordForm')->name('change-password-form');
     Route::post('change-password', 'UserController@changePassword')->name('change-password');
 });
