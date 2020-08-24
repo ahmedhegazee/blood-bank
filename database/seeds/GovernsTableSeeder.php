@@ -18,7 +18,7 @@ class GovernsTableSeeder extends Seeder
         for ($i = 0; $i < sizeof($governs); $i++) {
             Government::create(['name' => $governs[$i]]);
         }
-        DB::statement("INSERT INTO `cities` (`id`, `created_at`, `updated_at`, `name`, `government_id`) VALUES
+        DB::statement("INSERT INTO cities (id, created_at, updated_at, name, government_id) VALUES
 ('1', NULL, NULL, 'القاهره', '1'),
 ('2', NULL, NULL, 'الجيزة', '2'),
 ('3', NULL, NULL, 'السادس من أكتوبر', '2'),
