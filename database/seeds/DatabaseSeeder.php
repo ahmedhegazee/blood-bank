@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CategoryTableSeeder::class);
         $this->call(PostTableSeeder::class);
         $this->call(ClientsTableSeeder::class);
-        DB::statement("INSERT INTO permissions (id, name, display_name, description, created_at, updated_at, group, routes) VALUES
+        DB::statement("INSERT INTO permissions (id, name, display_name, description, created_at, updated_at, permissions_group, routes) VALUES
 ('1', 'add-post', 'اضافة مقال', NULL, '2020-08-23 09:06:15', '2020-08-23 09:08:02', 'مقالات', 'post.create,post.store'),
 ('2', 'edit-post', 'تعديل مقال', NULL, '2020-08-23 09:06:15', '2020-08-23 09:07:55', 'مقالات', 'post.edit,post.update'),
 ('3', 'delete-post', 'حذف مقال', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'مقالات', 'post.destroy'),

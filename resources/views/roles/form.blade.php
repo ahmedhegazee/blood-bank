@@ -22,7 +22,7 @@
     @foreach ($perm->all()->groupBy('group')->keys() as $group)
     {{-- <h4>{{$group}}</h4> --}}
     <div class="row mb-2 p-1" style="border: 1px solid #ccc; border-radius:10px;">
-        @foreach ($perm->all()->groupBy('group')->get($group) as $permission)
+        @foreach ($perm->all()->groupBy('permissions_group')->get($group) as $permission)
         <div class="col-3-sm mr-2">
             <div class="input-group">
                 <div class="input-group-prepend">
