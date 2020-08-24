@@ -60,10 +60,10 @@ class ClientsTableSeeder extends Seeder
                 $client->governments()->attach([8, 4]);
             }
         }
-        User::create([
-            'name' => 'ahmed hegazy',
-            'email' => 'hegz@admin.com',
-            'password' => bcrypt('password')
-        ]);
+        // User::create([
+        //     'name' => 'ahmed hegazy',
+        //     'email' => 'hegz@admin.com',
+        //     'password' => bcrypt('password')
+        // ]);
     }
 }

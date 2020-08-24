@@ -2,6 +2,9 @@
 
 use App\Models\BloodType;
 use App\Models\Category;
+use App\Models\Permission;
+use App\Models\Role;
+use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -36,10 +39,10 @@ class DatabaseSeeder extends Seeder
 ('20', 'show-categories', 'عرض تصنيفات', NULL, '2020-08-23 09:06:15', '2020-08-23 09:08:02', 'تصنيفات', 'category.index'),
 ('21', 'delete-role', 'حذف رتبة', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'رتب', 'role.destroy'),
 ('22', 'show-roles', 'عرض رتب', NULL, '2020-08-23 09:07:07', '2020-08-23 09:07:41', 'رتب', 'role.index'),
-('23', 'edit-government', 'تعديل محافظة', NULL, '2020-08-23 09:07:34', '2020-08-23 09:07:34', 'محافظة', 'govern.edit,govern.update'),
-('24', 'show-governments', 'عرض محافظة', NULL, '2020-08-23 09:06:15', '2020-08-23 09:08:02', 'محافظة', 'govern.index'),
-('25', 'delete-government', 'حذف محافظة', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'محافظة', 'govern.destroy'),
-('26', 'add-government', 'اضافة محافظة', NULL, '2020-08-23 09:07:07', '2020-08-23 09:07:41', 'محافظة', 'govern.store,govern.create'),
+('23', 'edit-government', 'تعديل محافظة', NULL, '2020-08-23 09:07:34', '2020-08-23 09:07:34', 'محافظة', 'government.edit,government.update'),
+('24', 'show-governments', 'عرض محافظة', NULL, '2020-08-23 09:06:15', '2020-08-23 09:08:02', 'محافظة', 'government.index'),
+('25', 'delete-government', 'حذف محافظة', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'محافظة', 'government.destroy'),
+('26', 'add-government', 'اضافة محافظة', NULL, '2020-08-23 09:07:07', '2020-08-23 09:07:41', 'محافظة', 'government.store,government.create'),
 ('27', 'edit-city', 'تعديل مدينة', NULL, '2020-08-23 09:07:34', '2020-08-23 09:07:34', 'مدن', 'city.edit,city.update'),
 ('28', 'show-cities', 'عرض مدن', NULL, '2020-08-23 09:06:15', '2020-08-23 09:08:02', 'مدن', 'city.index'),
 ('29', 'delete-city', 'حذف مدينة', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'مدن', 'city.destroy'),
@@ -50,5 +53,16 @@ class DatabaseSeeder extends Seeder
 ('34', 'delete-request', 'حذف طلب تبرع', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'طلبات تبرع', 'request.destroy'),
 ('35', 'show-requests', 'عرض طلبات التبرع', NULL, '2020-08-23 09:06:45', '2020-08-23 09:07:48', 'طلبات تبرع', 'request.index');
 ");
+        $role = Role::create([
+            'name' => 'admin',
+            'display_name' => 'مدير الموقع',
+        ]);
+        $role->permissions()->attach(Permission::all('id'));
+        $user  = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('password')
+        ]);
+        $user->roles()->attach(1);
     }
 }
