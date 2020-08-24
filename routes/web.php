@@ -47,6 +47,3 @@ Route::group(['middleware' => ['auth', 'auto-check-permission'], 'prefix' => 'da
     Route::get('change-password', 'UserController@showPasswordForm')->name('change-password-form');
     Route::post('change-password', 'UserController@changePassword')->name('change-password');
 });
-Route::get('test', function () {
-    dd(getHerokuDatabaseData('postgres://ekggzyrifaedbf:dc12cf0cce4817079764e9bd21f25370de9f7dc0d040e26029ce206b26a5e559@ec2-34-195-115-225.compute-1.amazonaws.com:5432/defro6us0ocs7s'));
-});
