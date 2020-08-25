@@ -5,24 +5,13 @@
 Clients
 @endsection
 @section('additional_styles')
-<link rel="stylesheet" href="{{asset('adminlte/plugins/css/dataTables.bootstrap4.min.css')}}" />
-<link rel="stylesheet" href="{{asset('adminlte/plugins/css/responsive.bootstrap4.min.css')}}" />
+@include('partials.grid-view-styles')
 @endsection
 @section('additional_scripts')
-<script src="{{asset('adminlte/plugins/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('adminlte/plugins/js/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('adminlte/plugins/js/dataTables.responsive.min.js')}}"></script>
-<script src="{{asset('adminlte/plugins/js/responsive.bootstrap4.min.js')}}"></script>
+@include('partials.grid-view-scripts')
+@include('partials.delete')
 <script>
-    $(function () {
-        $("#table").DataTable({
-          responsive: true,
-          autoWidth: false,
-          paging:false,
-          searching:false,
-          info:false,
-        });});
-        function getCities(){
+    function getCities(){
           let govern = $('#govern').val();
         //   console.log(govern);
 
@@ -103,7 +92,7 @@ Clients
                 </thead>
                 <tbody>
                     @forelse ($records as $record)
-                    <tr>
+                    <tr id="record-{{ $record->id }}">
                         <td>{{$loop->iteration}}</td>
                         <td>{{$record->name}}</td>
                         <td>{{$record->email}}</td>
@@ -112,7 +101,7 @@ Clients
                         <td>{{$record->bloodType->name}}</td>
                         <td>{{$record->city->government->name}}</td>
                         <td>{{$record->city->name}}</td>
-                        <td>{{$record->getBannedStatus()}}</td>
+                        <td>{{$record->is_banned}}</td>
                         <td>
                             <a href="{{route('client.update',['client'=>$record->id])}}" onclick="event.preventDefault();
                                     document.getElementById('{{'ban'.$record->id}}').submit();"
@@ -121,20 +110,15 @@ Clients
                                 action="{{ route('client.update',['client'=>$record->id]) }}" method="POST"
                                 style="display: none;">
                                 @method('put')
-                                <input type="number" name="is_banned" value="{{$record->is_banned?0:1}}">
+                                <input type="number" name="is_banned" value="{{$record->is_banned=='Banned'?0:1}}">
                                 @csrf
                             </form>
                         </td>
                         <td>
-                            <a href="{{route('client.destroy',['client'=>$record->id])}}" onclick="event.preventDefault();
-                                    document.getElementById('{{'delete'.$record->id}}').submit();"
+                            <a href="{{route('client.destroy',['client'=>$record->id])}}"
+                                id="delete-route-{{ $record->id }}"
+                                onclick="event.preventDefault();deleteRecord({{ $record->id }});"
                                 class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                            <form id="{{'delete'.$record->id}}"
-                                action="{{ route('client.destroy',['client'=>$record->id]) }}" method="POST"
-                                style="display: none;">
-                                @method('delete')
-                                @csrf
-                            </form>
                         </td>
                     </tr>
                     @empty
@@ -156,7 +140,7 @@ Clients
             {{$records->links()}}
         </div>
         <!-- /.card-body -->
-
+        @csrf
     </div>
     <!-- /.card -->
 

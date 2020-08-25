@@ -19,8 +19,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (!auth()->user()->can('show-users'))
-            abort(403);
+        // if (!auth()->user()->can('show-users'))
+        //     abort(403);
         $records = User::paginate(10);
         return view('users.index', compact('records'));
     }
@@ -44,16 +44,17 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $this->validate($request, [
             'name' => 'required|string',
             'password' => 'required|string|confirmed',
             'email' => 'required|email',
-            'roles_list' => ['required', Rule::in(Role::all())]
+            'roles_list' => 'required|array'
         ]);
         $request->merge(['password' => bcrypt($request->password)]);
         $user = User::create($request->all());
         $user->roles()->sync($request->roles_list);
-        flash('User is added', 'success')->important();
+        flash('Added Successfully', 'success')->important();
         return redirect(route('user.index'));
     }
 
@@ -88,7 +89,7 @@ class UserController extends Controller
         $request->merge(['password' => bcrypt($request->password)]);
         $user->update($request->all());
         $user->roles()->sync($request->roles_list);
-        flash('User is updated', 'success')->important();
+        flash('Updated Successfully', 'success')->important();
         return redirect(route('user.index'));
     }
 
@@ -100,9 +101,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
-        flash('User is updated', 'success')->important();
-        return redirect(route('user.index'));
+        $check = $user->delete();
+        if ($check) {
+            return jsonResponse(1, 'success');
+        } else {
+            return jsonResponse(0, 'error');
+        }
+        // flash('User is updated', 'success')->important();
+        // return redirect(route('user.index'));
     }
     public function changePassword(Request $request)
     {

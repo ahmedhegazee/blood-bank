@@ -40,7 +40,7 @@ class CategoryController extends Controller
             'name' => 'required|min:3',
         ]);
         Category::create($request->all());
-        flash('Category is added', 'success')->important();
+        flash('Added Successfully', 'success')->important();
         return redirect()->route('category.index');
     }
 
@@ -68,7 +68,7 @@ class CategoryController extends Controller
             'name' => 'required|min:3',
         ]);
         $category->update($request->all());
-        flash('Category is updated', 'success')->important();
+        flash('Updated Successfully', 'success')->important();
         return redirect()->route('category.index');
     }
 
@@ -80,8 +80,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
-        flash('Category is deleted', 'success')->important();
-        return redirect()->route('category.index');
+        $check = $category->delete();
+        if ($check) {
+            return jsonResponse(1, 'success');
+        } else {
+            return jsonResponse(0, 'error');
+        }
     }
 }

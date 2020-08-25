@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -46,8 +47,8 @@ class RoleController extends Controller
             'permissions_list' => 'required|array'
         ]);
         $role = Role::create($request->all());
-        $role->permissions->sync($request->permissions_list);
-        flash('Role is added', 'success')->important();
+        $role->permissions()->sync($request->permissions_list);
+        flash('Added Successfully', 'success')->important();
         return redirect(route('role.index'));
     }
 
@@ -78,7 +79,7 @@ class RoleController extends Controller
         ]);
         $role->update($request->all());
         $role->permissions()->sync($request->permissions_list);
-        flash('Role is updated', 'success')->important();
+        flash('Updated Successfully', 'success')->important();
         return redirect(route('role.index'));
     }
 
@@ -90,8 +91,11 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        $role->delete();
-        flash('Role is deleted', 'success')->important();
-        return redirect(route('role.index'));
+        $check = $role->delete();
+        if ($check) {
+            return jsonResponse(1, 'success');
+        } else {
+            return jsonResponse(0, 'error');
+        }
     }
 }

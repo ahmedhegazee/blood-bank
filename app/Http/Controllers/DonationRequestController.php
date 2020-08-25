@@ -50,8 +50,11 @@ class DonationRequestController extends Controller
      */
     public function destroy(DonationRequest $request)
     {
-        $request->delete();
-        flash('Request is deleted', 'success')->important();
-        return redirect(route('request.index'));
+        $check = $request->delete();
+        if ($check) {
+            return jsonResponse(1, 'success');
+        } else {
+            return jsonResponse(0, 'error');
+        }
     }
 }

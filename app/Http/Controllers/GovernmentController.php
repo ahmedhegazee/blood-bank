@@ -41,7 +41,7 @@ class GovernmentController extends Controller
             'name' => 'required|min:3',
         ]);
         Government::create($request->all());
-        flash('Government is added', 'success')->important();
+        flash('Added Successfully', 'success')->important();
         return redirect()->route('government.index');
     }
 
@@ -81,7 +81,7 @@ class GovernmentController extends Controller
             'name' => 'required|min:3',
         ]);
         $government->update($request->all());
-        flash('Government is updated', 'success')->important();
+        flash('Updated Successfully', 'success')->important();
         return redirect()->route('government.index');
     }
 
@@ -93,8 +93,11 @@ class GovernmentController extends Controller
      */
     public function destroy(Government $government)
     {
-        $government->delete();
-        flash('Government is deleted', 'success')->important();
-        return redirect()->route('government.index');
+        $check = $government->delete();
+        if ($check) {
+            return jsonResponse(1, 'success');
+        } else {
+            return jsonResponse(0, 'error');
+        }
     }
 }

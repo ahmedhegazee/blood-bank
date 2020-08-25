@@ -32,7 +32,7 @@ class CityController extends Controller
             'name' => 'required|min:3',
         ]);
         $govern->cities()->create($request->all());
-        flash('City is added', 'success')->important();
+        flash('Added Successfully', 'success')->important();
         return redirect()->route('government.show', compact('govern'));
     }
 
@@ -61,7 +61,7 @@ class CityController extends Controller
             'name' => 'required|min:3',
         ]);
         $city->update($request->all());
-        flash('City is updated', 'success')->important();
+        flash('Updated Successfully', 'success')->important();
         return redirect()->route('government.show', compact('govern'));
     }
 
@@ -73,8 +73,11 @@ class CityController extends Controller
      */
     public function destroy(Government $govern, City $city)
     {
-        $city->delete();
-        flash('City is deleted', 'success')->important();
-        return redirect()->route('government.show', compact('govern'));
+        $check = $city->delete();
+        if ($check) {
+            return jsonResponse(1, 'success');
+        } else {
+            return jsonResponse(0, 'error');
+        }
     }
 }

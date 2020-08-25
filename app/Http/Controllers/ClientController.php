@@ -42,8 +42,8 @@ class ClientController extends Controller
     public function update(Request $request, Client $client)
     {
         $client->update($request->all());
-        flash('Client is updated', 'success')->important();
-        return redirect(route('client.index'));
+        flash('Updated Successfully', 'success')->important();
+        return back();
     }
 
     /**
@@ -55,8 +55,11 @@ class ClientController extends Controller
     public function destroy(Client $client)
     {
 
-        $client->delete();
-        flash('Client is deleted', 'success')->important();
-        return redirect(route('client.index'));
+        $check = $client->delete();
+        if ($check) {
+            return jsonResponse(1, 'success');
+        } else {
+            return jsonResponse(0, 'error');
+        }
     }
 }

@@ -5,26 +5,16 @@
 Donation Requests
 @endsection
 @section('additional_styles')
-<link rel="stylesheet" href="{{asset('adminlte/plugins/css/dataTables.bootstrap4.min.css')}}" />
-<link rel="stylesheet" href="{{asset('adminlte/plugins/css/responsive.bootstrap4.min.css')}}" />
+@include('partials.grid-view-styles')
 @endsection
 @section('additional_scripts')
-<script src="{{asset('adminlte/plugins/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('adminlte/plugins/js/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('adminlte/plugins/js/dataTables.responsive.min.js')}}"></script>
-<script src="{{asset('adminlte/plugins/js/responsive.bootstrap4.min.js')}}"></script>
+@include('partials.grid-view-scripts')
+@include('partials.delete')
 <script>
-    $(function () {
-        $("#table").DataTable({
-          responsive: true,
-          autoWidth: false,
-          paging:false,
-          searching:false,
-          info:false,
-        });});
-        function getCities(){
+    function getCities(){
           let govern = $('#govern').val();
-          console.log(govern);
+        //   console.log(govern);
+
           $.ajax({
             url:`${location.origin}/api/v1/cities?govern=${govern}`
           }).done(function(data){
@@ -100,7 +90,7 @@ Donation Requests
                 </thead>
                 <tbody>
                     @forelse ($records as $record)
-                    <tr>
+                    <tr id="record-{{ $record->id }}">
                         <td>{{$loop->iteration}}</td>
                         <td>{{$record->name}}</td>
                         <td>{{$record->phone}}</td>
@@ -113,15 +103,10 @@ Donation Requests
                                     class="fas fa-eye"></i></a>
                         </td>
                         <td>
-                            <a href="{{route('request.destroy',['request'=>$record->id])}}" onclick="event.preventDefault();
-                                    document.getElementById('{{'delete'.$record->id}}').submit();"
+                            <a href="{{route('request.destroy',['request'=>$record->id])}}"
+                                id="delete-route-{{ $record->id }}"
+                                onclick="event.preventDefault();deleteRecord({{ $record->id }});"
                                 class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                            <form id="{{'delete'.$record->id}}"
-                                action="{{ route('request.destroy',['request'=>$record->id]) }}" method="POST"
-                                style="display: none;">
-                                @method('delete')
-                                @csrf
-                            </form>
                         </td>
                     </tr>
                     @empty
@@ -144,7 +129,7 @@ Donation Requests
 
     </div>
     <!-- /.card -->
-
+    @csrf
 </section>
 <!-- /.content -->
 @endsection

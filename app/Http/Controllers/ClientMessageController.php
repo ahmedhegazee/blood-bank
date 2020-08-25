@@ -25,8 +25,11 @@ class ClientMessageController extends Controller
      */
     public function destroy(ClientMessage $message)
     {
-        $message->delete();
-        flash('Message is deleted', 'success')->important();
-        return redirect(route('message.index'));
+        $check = $message->delete();
+        if ($check) {
+            return jsonResponse(1, 'success');
+        } else {
+            return jsonResponse(0, 'error');
+        }
     }
 }

@@ -61,11 +61,18 @@ class Client extends Authenticatable
     {
         return $this->hasMany('App\Models\Token');
     }
-    public function getBannedStatus()
+    // public function getBannedStatus()
+    // {
+    //     return [
+    //         0 => 'Not Banned',
+    //         1 => 'Banned'
+    //     ][$this->is_banned];
+    // }
+    public function getIsBannedAttribute($value)
     {
         return [
             0 => 'Not Banned',
             1 => 'Banned'
-        ][$this->is_banned];
+        ][$value];
     }
 }
