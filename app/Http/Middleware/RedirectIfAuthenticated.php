@@ -17,8 +17,13 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        $redirectTo = '';
+        if ($guard == 'client')
+            $redirectTo = '/';
+        else
+            $redirectTo = '/dashboard';
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            return redirect($redirectTo);
         }
 
         return $next($request);

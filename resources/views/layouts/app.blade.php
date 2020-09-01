@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html @if (app()->getLocale()=='ar')
+dir="rtl"
+@endif>
 {{-- dir="rtl" --}}
 
 <head>
@@ -15,6 +17,7 @@
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/rtl.css') }}">
     @yield('additional_styles')
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
@@ -71,7 +74,7 @@
                             <a href="{{ route('client.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
-                                    Clients
+                                    {{ __('pages.Clients') }}
                                 </p>
                             </a>
                         </li>
@@ -79,7 +82,8 @@
                             <a href="{{ route('request.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-hand-holding-heart"></i>
                                 <p>
-                                    Donation Request
+                                    {{ __('pages.Donation Request') }}
+
                                 </p>
                             </a>
                         </li>
@@ -87,7 +91,8 @@
                             <a href="{{ route('government.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-university"></i>
                                 <p>
-                                    Governemts
+                                    {{ __('pages.Governments') }}
+
                                 </p>
                             </a>
                         </li>
@@ -95,7 +100,7 @@
                             <a href="{{ route('post.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-images"></i>
                                 <p>
-                                    Posts
+                                    {{ __('pages.Posts') }}
                                 </p>
                             </a>
                         </li>
@@ -103,7 +108,17 @@
                             <a href="{{ route('category.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-bookmark"></i>
                                 <p>
-                                    Categories
+                                    {{ __('pages.Categories') }}
+
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('category.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-envelope"></i>
+                                <p>
+                                    {{ __('pages.Client Messages') }}
+
                                 </p>
                             </a>
                         </li>
@@ -111,7 +126,8 @@
                             <a href="{{ route('user.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
-                                    Users
+                                    {{ __('pages.Users') }}
+
                                 </p>
                             </a>
                         </li>
@@ -119,7 +135,8 @@
                             <a href="{{ route('role.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-user-tag"></i>
                                 <p>
-                                    Roles
+                                    {{ __('pages.Roles') }}
+
                                 </p>
                             </a>
                         </li>
@@ -135,7 +152,8 @@
                             <a href="{{ route('setting.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-cogs"></i>
                                 <p>
-                                    Settings
+                                    {{ __('pages.Settings') }}
+
                                 </p>
                             </a>
                         </li>
@@ -143,7 +161,9 @@
                             <a href="{{ route('change-password-form') }}" class="nav-link">
                                 <i class="nav-icon fas fa-key"></i>
                                 <p>
-                                    Change Password
+
+                                    {{ __('pages.Change Password') }}
+
                                 </p>
                             </a>
                         </li>
@@ -152,7 +172,8 @@
                                     document.getElementById('logout-form').submit();" class="nav-link">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>
-                                    Logout
+                                    {{ __('pages.Logout') }}
+
                                 </p>
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -174,12 +195,6 @@
                         <div class="col-sm-6">
                             <h1>@yield('page_title')</h1>
                         </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                                <li class="breadcrumb-item active">@yield('page_title')</li>
-                            </ol>
-                        </div>
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
@@ -187,7 +202,7 @@
         </div>
         <!-- /.content-wrapper -->
         <footer class="main-footer">
-            <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div>
+            {{-- <div class="float-right d-none d-sm-block"><b>Version</b> 1.0</div> --}}
             <strong>Copyright &copy; 2020
                 <a href="#">Blood Bank</a>.</strong>
             Developed By Ahmed Hegazy.

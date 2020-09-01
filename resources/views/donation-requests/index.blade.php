@@ -2,7 +2,7 @@
 @inject('bloodTypes','App\Models\BloodType')
 @inject('governs','App\Models\Government')
 @section('page_title')
-Donation Requests
+{{ __('pages.Donation Request') }}
 @endsection
 @section('additional_styles')
 @include('partials.grid-view-styles')
@@ -12,20 +12,23 @@ Donation Requests
 @include('partials.delete')
 <script>
     function getCities(){
-          let govern = $('#govern').val();
-        //   console.log(govern);
+let govern = $('#govern').val();
+// console.log(govern);
 
-          $.ajax({
-            url:`${location.origin}/api/v1/cities?govern=${govern}`
-          }).done(function(data){
-            let cities = data.data;
-           $('#city').empty();
-           $(`<option selected="" disabled="">Select City</option>`).appendTo('#city');
-            cities.forEach(function(city){
-              $(`<option value=${city.id}>${city.name}</option>`).appendTo('#city');
-            });
-          })
-        }
+$.ajax({
+url:`${location.origin}/api/v1/cities?govern=${govern}`
+}).done(function(data){
+let cities = data.data;
+
+let defaultElement= $('#city').children().first();
+$('#city').empty();
+$(defaultElement).appendTo('#city');
+// $(`<option selected="" disabled=""></option>`).appendTo('#city');
+cities.forEach(function(city){
+$(`<option value=${city.id}>${city.name}</option>`).appendTo('#city');
+});
+})
+}
 </script>
 @endsection
 @section('content')
@@ -38,12 +41,11 @@ Donation Requests
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">List Of Donation Requests</h3>
+            <h3 class="card-title">{{ __('pages.List Of').' '. __('pages.Donation Request') }} </h3>
             <div class="row justify-content-end">
                 <form class="form-inline ml-3" id="filter" action="{{route('request.index')}}">
                     <div class="input-group input-group-sm mr-2">
-                        <input class="form-control form-control-navbar" type="search" name="search" value=""
-                            style="background-color: #fff;" placeholder="Search" aria-label="Search">
+                        @if (app()->getLocale()=='ar')
                         <div class="input-group-append">
                             <button class="btn btn-navbar"
                                 style="background-color: #fff; border:1px solid #CED4DA; border-left:0; color:rgba(0,0,0,.6)"
@@ -51,23 +53,36 @@ Donation Requests
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
+                        <input class="form-control form-control-navbar" type="search" name="search" value=""
+                            style="background-color: #fff;" placeholder="{{ __('pages.Search') }}" aria-label="Search">
+                        @else
+                        <input class="form-control form-control-navbar" type="search" name="search" value=""
+                            style="background-color: #fff;" placeholder="{{ __('pages.Search') }}" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar"
+                                style="background-color: #fff; border:1px solid #CED4DA; border-left:0; color:rgba(0,0,0,.6)"
+                                type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        @endif
                     </div>
                     <select class="form-control custom-select mr-2"
                         onchange="document.getElementById('filter').submit();" name="blood" id="blood">
-                        <option selected="" disabled="">Select Blood Type</option>
+                        <option selected="" disabled="">{{ __('pages.Select').' '.__('pages.Blood Type') }}</option>
                         @foreach ($bloodTypes->all() as $bloodType)
                         <option value={{$bloodType->id}}>{{$bloodType->name}}</option>
                         @endforeach
                     </select>
                     <select class="form-control custom-select mr-2" onchange="getCities()" name="govern" id="govern">
-                        <option selected="" disabled="">Select Govern</option>
+                        <option selected="" disabled="">{{ __('pages.Select').' '.__('pages.Govern') }}</option>
                         @foreach ($governs->all() as $govern)
                         <option value={{$govern->id}}>{{$govern->name}}</option>
                         @endforeach
                     </select>
                     <select class="form-control custom-select" onchange="document.getElementById('filter').submit();"
                         name="city" id="city">
-                        <option selected="" disabled="">Select City</option>
+                        <option selected="" disabled="">{{ __('pages.Select').' '.__('pages.City') }}</option>
 
                         {{-- <option value={{$bloodType->id}}>{{$bloodType->name}}</option> --}}
 
@@ -79,14 +94,14 @@ Donation Requests
             <table id="table" class="table table-bordered table-hover table-striped">
                 <thead>
                     <th>#</th>
-                    <th>Name</th>
-                    <th>Phone</th>
+                    <th>{{ __('pages.Name') }}</th>
+                    <th>{{ __('pages.Phone') }}</th>
                     {{-- <th>Date Of Birth</th> --}}
-                    <th>Blood Type</th>
-                    <th>Govern</th>
-                    <th>City</th>
-                    <th>Show</th>
-                    <th>Delete</th>
+                    <th>{{ __('pages.Blood Type') }}</th>
+                    <th>{{ __('pages.Govern') }}</th>
+                    <th>{{ __('pages.City') }}</th>
+                    <th>{{ __('pages.Show') }}</th>
+                    <th>{{ __('pages.Delete') }}</th>
                 </thead>
                 <tbody>
                     @forelse ($records as $record)

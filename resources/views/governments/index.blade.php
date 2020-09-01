@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page_title')
-Governments
+{{ __('pages.Governments') }}
 @endsection
 @section('additional_styles')
 @include('partials.grid-view-styles')
@@ -20,26 +20,27 @@ Governments
     <!-- Default box -->
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">List Of Governments</h3>
+            <h3 class="card-title">{{ __('pages.List Of').' '. __('pages.Governments') }}</h3>
         </div>
         <div class="card-body">
             <div class="row justify-content-end mb-2">
-                <a href="{{ route('government.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add
-                    Government</a>
+                <a href="{{ route('government.create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
+                    {{ __('pages.Add').' '. __('pages.Govern') }}</a>
             </div>
             <table id="table" class="table table-bordered table-hover table-striped">
                 <thead>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>No Cities</th>
-                    <th>Show</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>#</th>
+                    <th>{{ __('pages.Name') }}</th>
+                    <th>{{ __('pages.No').' '. __('pages.Cities') }} </th>
+                    <th>{{ __('pages.Show') }}</th>
+
+                    <th>{{ __('pages.Edit') }}</th>
+                    <th>{{ __('pages.Delete') }}</th>
                 </thead>
                 <tbody>
                     @forelse($records as $record)
                     <tr id="record-{{ $record->id }}">
-                        <td>{{ $record->id }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $record->name }}</td>
                         <td>{{ $record->cities->count() }}</td>
                         <td>

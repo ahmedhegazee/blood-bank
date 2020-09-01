@@ -48,7 +48,9 @@ return [
         ],
         'client' => [
             'driver' => 'session',
-            'provider' => 'clients'
+            'provider' => 'clients',
+            'table' => 'password_resets',
+            'expire' => 60,
         ],
         'client_api' => [
             'driver' => 'token',

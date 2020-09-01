@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Page;
 use App\Models\Settings;
 use Illuminate\Database\Seeder;
 
@@ -35,6 +36,25 @@ class SettingsTableSeeder extends Seeder
         Settings::create([
             'name' => 'twitter',
             'value' => 'http://twitter.com/bloodbank',
+        ]);
+        Settings::create([
+            'name' => 'playstore',
+            'value' => 'https://play.google.com/store/apps/details?id=com.bloodbank&hl=en',
+        ]);
+        Settings::create([
+            'name' => 'appstore',
+            'value' => 'https://apps.apple.com/us/app/bloodbank/id310633997',
+        ]);
+        Settings::create([
+            'name' => 'fax',
+            'value' => '4123412',
+        ]);
+        $paragraph = 'بنك الدم هذا النص هو مثال لنص ممكن أن يستبدل فى نفس المساحه, لقد تم توليد هذا النص من مولد النص العرب حيث يمكنك ان تولد هذا النص أو العديد من النصوص الأخرى وإضافة الى زيادة عدد الحروف التى يولدها التطبيق بنك الدم هذا النص هو مثال لنص ممكن أن يستبدل فى نفس المساحه, لقد تم توليد هذا النص من مولد النص العرب حيث يمكنك ان تولد هذا النص أو العديد من النصوص الأخرى';
+        $content = array_fill(0, 3, $paragraph);
+
+        Page::create([
+            'name' => 'about',
+            'content' => join('', $content)
         ]);
     }
 }

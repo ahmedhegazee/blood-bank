@@ -7,7 +7,9 @@ use App\Search;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Client extends Authenticatable
+use Illuminate\Contracts\Auth\CanResetPassword;
+
+class Client extends Authenticatable implements CanResetPassword
 {
     use Notifiable, Search;
     protected $table = 'clients';

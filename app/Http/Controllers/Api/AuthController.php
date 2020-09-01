@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\ResetPassword;
 use App\Models\BloodType;
 use App\Models\City;
 use App\Models\Client;
@@ -12,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Mail;
 
 class AuthController extends Controller
 {
@@ -39,7 +41,7 @@ class AuthController extends Controller
         $auth = Auth::guard('client')->attempt(['phone' => $request->phone, 'password' => $request->password]);
         if ($auth) {
             $client = Auth::guard('client')->user();
-            if (!$client->is_banned) {
+            if ($client->is_banned != 'Banned') {
                 if (is_null($client->api_token)) {
                     $client->api_token = Str::random(60);
                     $client->save();
@@ -153,6 +155,7 @@ class AuthController extends Controller
         $client = Client::where('phone', $request->phone)->first();
         $client->pin_code = $resetCode;
         $client->save();
+        Mail::to($client->email)->queue(new ResetPassword($resetCode));
         sendSMS('your reset code is ' . $resetCode, '+2' . $client->phone);
         return jsonResponse(1, 'تم ارسال الكود بنجاح');
     }
