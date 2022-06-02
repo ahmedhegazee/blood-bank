@@ -73,7 +73,7 @@ Dashboard
             @endif
         </div>
         <!-- Default box -->
-        <div class="card">
+        {{-- <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Title</h3>
 
@@ -94,7 +94,7 @@ Dashboard
                 Footer
             </div>
             <!-- /.card-footer-->
-        </div>
+        </div> --}}
         <!-- /.card -->
 
 </section>
